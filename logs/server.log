@@ -1,0 +1,14 @@
+[2026-03-30 00:00:29] [DEBUG   ] This is a DEBUG message
+[2026-03-30 00:00:29] [INFO    ] This is an INFO message
+[2026-03-30 00:00:29] [WARNING ] This is a WARNING message
+[2026-03-30 00:00:29] [ERROR   ] This is an ERROR message
+[2026-03-30 00:00:29] [CRITICAL] This is a CRITICAL message
+[2026-03-30 00:00:29] [INFO    ] Logger test complete!
+[2026-03-30 00:00:29] [INFO    ] Logger shutting down
+[2026-03-30 00:11:51] [DEBUG   ] This is a DEBUG message
+[2026-03-30 00:11:51] [INFO    ] This is an INFO message
+[2026-03-30 00:11:51] [WARNING ] This is a WARNING message
+[2026-03-30 00:11:51] [ERROR   ] This is an ERROR message
+[2026-03-30 00:11:51] [CRITICAL] This is a CRITICAL message
+[2026-03-30 00:11:51] [INFO    ] Logger test complete!
+[2026-03-30 00:11:51] [INFO    ] Logger shutting down
