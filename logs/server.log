@@ -30,3 +30,9 @@
 [2026-03-30 12:24:49] [INFO    ] File not found or access denied: /../../../etc/passwd
 [2026-03-30 12:24:49] [INFO    ] Path traversal test complete
 [2026-03-30 12:24:49] [INFO    ] Logger shutting down
+[2026-03-31 00:34:18] [WARNING ] Seccomp not available on this platform — sandbox not applied (development mode). Deploy on Linux/Fedora for full sandboxing.
+[2026-03-31 00:34:18] [INFO    ] All 6 files compile successfully!
+[2026-03-31 00:34:18] [INFO    ] Logger shutting down
+[2026-03-31 00:48:44] [INFO    ] FileServer web root: /Users/MAC/Documents/ass-server/www
+[2026-03-31 00:48:44] [INFO    ] All 7 files (4 .hpp + 3 .cpp) compile successfully!
+[2026-03-31 00:48:44] [INFO    ] Logger shutting down
