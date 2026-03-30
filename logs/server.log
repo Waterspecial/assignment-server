@@ -12,3 +12,21 @@
 [2026-03-30 00:11:51] [CRITICAL] This is a CRITICAL message
 [2026-03-30 00:11:51] [INFO    ] Logger test complete!
 [2026-03-30 00:11:51] [INFO    ] Logger shutting down
+[2026-03-30 00:23:30] [INFO    ] Empty wrapper fd: -1
+[2026-03-30 00:23:30] [INFO    ] Is valid: no
+[2026-03-30 00:23:30] [INFO    ] a has fd: 42
+[2026-03-30 00:23:30] [INFO    ] After move: a=-1 b=42
+[2026-03-30 00:23:30] [INFO    ] SocketWrapper tests passed!
+[2026-03-30 00:23:30] [INFO    ] Logger shutting down
+[2026-03-30 00:52:25] [INFO    ] All files compile successfully!
+[2026-03-30 00:52:25] [INFO    ] HttpRequest max body size: 1048576 bytes
+[2026-03-30 00:52:25] [INFO    ] Logger shutting down
+[2026-03-30 12:24:49] [INFO    ] FileServer web root: /Users/MAC/Documents/ass-server/www
+[2026-03-30 12:24:49] [INFO    ] Serving file: /Users/MAC/Documents/ass-server/www/index.html (text/html; charset=utf-8, 147 bytes)
+[2026-03-30 12:24:49] [INFO    ] GET / → 365 bytes
+[2026-03-30 12:24:49] [INFO    ] File not found or access denied: /doesnt_exist.html
+[2026-03-30 12:24:49] [INFO    ] GET /doesnt_exist.html → response built
+[2026-03-30 12:24:49] [WARNING ] SECURITY: Path traversal attempt detected: /../../../etc/passwd
+[2026-03-30 12:24:49] [INFO    ] File not found or access denied: /../../../etc/passwd
+[2026-03-30 12:24:49] [INFO    ] Path traversal test complete
+[2026-03-30 12:24:49] [INFO    ] Logger shutting down
