@@ -13,7 +13,6 @@ class Server {
 public:
     Server(int port, const std::string& webRoot, const std::string& formDataDir);
 
-    // Start the server — blocks until shutdown
     bool start();
 
     void stop();

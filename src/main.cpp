@@ -11,21 +11,18 @@ static bool ensureDirectory(const std::string& path) {
     struct stat st;
     if (stat(path.c_str(), &st) == 0) {
         if (S_ISDIR(st.st_mode)) {
-            return true;  // Already exists
+            return true;  
         }
-        return false;  // Exists but not a directory
+        return false;
     }
-    // Create with permissions: owner=rwx, group=r-x, others=none
     return mkdir(path.c_str(), 0750) == 0;
 }
 
-// Validate port number range
 static bool isValidPort(int port) {
     return port > 0 && port <= 65535;
 }
 
 int main(int argc, char* argv[]) {
-    // Check for help flag
     if (argc > 1 && (std::string(argv[1]) == "-h" || std::string(argv[1]) == "--help")) {
         std::cout << "SSS Secure Web Server\n"
                   << "Usage: " << argv[0] << " [port] [web_root] [form_data_dir]\n"
@@ -33,7 +30,6 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    // Parse arguments with defaults
     int port = 8080;
     std::string webRoot     = "./www";
     std::string formDataDir = "./form_data";
@@ -53,7 +49,6 @@ int main(int argc, char* argv[]) {
         formDataDir = argv[3];
     }
 
-    // Create directories
     if (!ensureDirectory(logDir)) {
         std::cerr << "Error: Failed to create log directory\n";
         return 1;
@@ -67,7 +62,6 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Start logger first (everything else needs it)
     Logger& logger = Logger::getInstance();
     if (!logger.init(logDir + "/server.log", LogLevel::DEBUG)) {
         std::cerr << "Error: Failed to start logger\n";
@@ -81,7 +75,6 @@ int main(int argc, char* argv[]) {
     logger.info("Form data dir: " + formDataDir);
     logger.info("========================================");
 
-    // Create and start the server
     Server server(port, webRoot, formDataDir);
 
     if (!server.start()) {

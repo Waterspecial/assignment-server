@@ -16,25 +16,18 @@ void HttpResponse::setHeader(const std::string& key, const std::string& value) {
 
 void HttpResponse::setBody(const std::string& content) {
     body_ = content;
-    // Always set Content-Length to prevent response splitting attacks
     headers_["Content-Length"] = std::to_string(body_.size());
 }
 
 void HttpResponse::addSecurityHeaders() {
-    // Prevents browser from guessing the content type
-    // Without this, a .txt file could be interpreted as HTML (XSS vector)
     headers_["X-Content-Type-Options"] = "nosniff";
 
-    // Prevents our pages from being embedded in frames (clickjacking defence)
     headers_["X-Frame-Options"] = "DENY";
 
-    // Basic XSS protection for older browsers
     headers_["X-XSS-Protection"] = "1; mode=block";
 
-    // Minimal server identification (don't reveal version details)
     headers_["Server"] = "SSS-SecureServer/1.0";
 
-    // Close connection after each request (simplifies state management)
     headers_["Connection"] = "close";
 }
 
@@ -44,19 +37,15 @@ std::string HttpResponse::build() const {
 
     std::ostringstream response;
 
-    // Status line
     response << "HTTP/1.1 " << mutable_copy.statusCode_ << " "
              << mutable_copy.reasonPhrase_ << "\r\n";
 
-    // Headers
     for (const auto& [key, value] : mutable_copy.headers_) {
         response << key << ": " << value << "\r\n";
     }
 
-    // Blank line separating headers from body
     response << "\r\n";
 
-    // Body
     if (!mutable_copy.body_.empty()) {
         response << mutable_copy.body_;
     }
@@ -147,7 +136,7 @@ HttpResponse HttpResponse::internalError() {
     HttpResponse resp;
     resp.setStatus(500, "Internal Server Error");
     resp.setHeader("Content-Type", "text/html; charset=utf-8");
-    // SECURITY: don't leak internal error details to the client
+
     resp.setBody(
         "<!DOCTYPE html><html><head><title>500 Internal Server Error</title></head>"
         "<body><h1>500 - Internal Server Error</h1>"
@@ -180,6 +169,5 @@ std::string HttpResponse::getMimeType(const std::string& extension) {
         return it->second;
     }
 
-    // Safe default: binary download (browser won't try to execute it)
     return "application/octet-stream";
 }

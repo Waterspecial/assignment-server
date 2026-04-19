@@ -1,12 +1,4 @@
-/**
- * @file logger.hpp
- * @brief Logger class for logging messages to a file
- * @author Waterspecial (boluwatifeomirinde080@gmail.com)
- * @version 0.1
- * @date 2026-03-29
- * 
- * @copyright Copyright (c) 2026
- */
+
 #ifndef LOGGER_HPP
 #define LOGGER_HPP
 
@@ -27,7 +19,6 @@ enum class LogLevel {
 };
 class Logger {
 public:
-    // Singleton: get the one-and-only Logger instance
     static Logger& getInstance() {
         static Logger instance;
         return instance;
@@ -109,4 +100,4 @@ public:
     LogLevel      minLevel_;
 };
 
-#endif // LOGGER_HPP
+#endif
