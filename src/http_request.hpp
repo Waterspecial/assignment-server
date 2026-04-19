@@ -13,7 +13,6 @@ enum class HttpMethod {
 
 class HttpRequest {
 public:
-    // Size limits to prevent attacks
     static constexpr size_t MAX_REQUEST_LINE_LENGTH = 8192;   
     static constexpr size_t MAX_HEADER_COUNT        = 100;    
     static constexpr size_t MAX_BODY_SIZE           = 1048576; 
@@ -50,4 +49,4 @@ public:
     static std::string toLower(const std::string& str);
 };
 
-#endif // HTTP_REQUEST_HPP
+#endif 

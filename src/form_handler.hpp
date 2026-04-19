@@ -8,11 +8,8 @@
 
 class FormHandler {
 public:
-    // Constructor: takes the directory where form data is stored
     explicit FormHandler(const std::string& storageDir);
 
-    // Handle a POST form submission
-    // Forks a child process, applies sandbox, processes data, reports result
     HttpResponse handleForm(const HttpRequest& request, int clientFd);
 
 private:

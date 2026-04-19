@@ -9,8 +9,6 @@
 #include <sys/stat.h> 
 
 FileServer::FileServer(const std::string& webRoot) {
-    // Immediately resolve the web root to its true absolute path
-    // This resolves any symlinks or ".." in the root path itself
     char resolvedRoot[PATH_MAX];
     if (realpath(webRoot.c_str(), resolvedRoot) != nullptr) {
         webRoot_ = std::string(resolvedRoot);
@@ -24,25 +22,23 @@ FileServer::FileServer(const std::string& webRoot) {
 HttpResponse FileServer::serveFile(const std::string& requestPath) {
     Logger& logger = Logger::getInstance();
 
-    // Step 1: Resolve the path securely
+    // Resolve the path securely
     std::string resolvedPath;
     if (!resolvePath(requestPath, resolvedPath)) {
         logger.info("File not found or access denied: " + requestPath);
         return HttpResponse::notFound();
     }
 
-    // Step 2: Read the file
     std::string content;
     if (!readFile(resolvedPath, content)) {
         logger.error("Failed to read file: " + resolvedPath);
         return HttpResponse::internalError();
     }
 
-    // Step 3: Determine content type from extension
     std::string ext = getExtension(resolvedPath);
     std::string mimeType = HttpResponse::getMimeType(ext);
 
-    // Step 4: Build response
+    // Build response
     logger.info("Serving file: " + resolvedPath + " (" + mimeType + ", "
                 + std::to_string(content.size()) + " bytes)");
     return HttpResponse::ok(content, mimeType);
@@ -51,46 +47,40 @@ HttpResponse FileServer::serveFile(const std::string& requestPath) {
 bool FileServer::resolvePath(const std::string& requestPath, std::string& resolvedPath) {
     Logger& logger = Logger::getInstance();
 
-    // LAYER 1: Reject paths containing ".." before touching the filesystem
     if (requestPath.find("..") != std::string::npos) {
         logger.warning("SECURITY: Path traversal attempt detected: " +
             requestPath.substr(0, 200));
         return false;
     }
 
-    // Reject null bytes (can truncate paths in C functions)
     if (requestPath.find('\0') != std::string::npos) {
         logger.warning("SECURITY: Null byte in request path");
         return false;
     }
 
-    // Build the full filesystem path
     std::string fullPath = webRoot_;
     if (requestPath.empty() || requestPath == "/") {
-        fullPath += "/index.html";  // Default document
+        fullPath += "/index.html";
     } else {
         fullPath += requestPath;
     }
 
-    // LAYER 2: Canonicalise with realpath()
+    // Canonicalise with realpath()
     char canonicalPath[PATH_MAX];
     if (realpath(fullPath.c_str(), canonicalPath) == nullptr) {
-        return false;  // File doesn't exist
+        return false;
     }
 
     resolvedPath = std::string(canonicalPath);
 
-    // LAYER 3: Verify the resolved path starts with our web root
     if (resolvedPath.substr(0, webRoot_.length()) != webRoot_) {
         logger.warning("SECURITY: Path escapes web root! Requested: " +
             requestPath + " → Resolved: " + resolvedPath);
         return false;
     }
 
-    // Make sure it's a regular file (not a directory or device)
     struct stat fileStat;
     if (stat(resolvedPath.c_str(), &fileStat) != 0 || !S_ISREG(fileStat.st_mode)) {
-        // If it's a directory, try index.html inside it
         if (S_ISDIR(fileStat.st_mode)) {
             std::string indexPath = resolvedPath + "/index.html";
             if (realpath(indexPath.c_str(), canonicalPath) != nullptr) {
@@ -103,7 +93,6 @@ bool FileServer::resolvePath(const std::string& requestPath, std::string& resolv
         }
         return false;
     }
-
     return true;
 }
 
@@ -117,7 +106,6 @@ bool FileServer::readFile(const std::string& filepath, std::string& content) {
     oss << file.rdbuf();
     content = oss.str();
 
-    // file is automatically closed here by ifstream's destructor (RAII)
     return true;
 }
 

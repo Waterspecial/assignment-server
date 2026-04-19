@@ -9,7 +9,6 @@
 std::optional<HttpRequest> HttpRequest::parse(int client_fd) {
     Logger& logger = Logger::getInstance();
 
-    // Step 1: Read raw data from socket until we find end of headers
     std::string rawData;
     char buffer[READ_BUFFER_SIZE];
     bool headersComplete = false;
@@ -25,7 +24,6 @@ std::optional<HttpRequest> HttpRequest::parse(int client_fd) {
 
         totalRead += static_cast<size_t>(bytesRead);
 
-        // SECURITY: reject oversized requests (prevents memory exhaustion)
         if (totalRead > MAX_REQUEST_LINE_LENGTH * MAX_HEADER_COUNT + MAX_BODY_SIZE) {
             logger.warning("Request exceeds maximum allowed size — rejecting");
             return std::nullopt;
@@ -33,25 +31,22 @@ std::optional<HttpRequest> HttpRequest::parse(int client_fd) {
 
         rawData.append(buffer, static_cast<size_t>(bytesRead));
 
-        // HTTP headers end with a blank line: \r\n\r\n
         if (rawData.find("\r\n\r\n") != std::string::npos) {
             headersComplete = true;
         }
     }
 
-    // Step 2: Split headers from body
     size_t headerEnd = rawData.find("\r\n\r\n");
     std::string headerSection = rawData.substr(0, headerEnd);
     std::string bodyData = rawData.substr(headerEnd + 4);
 
-    // Step 3: Parse line by line
     HttpRequest request;
     std::istringstream headerStream(headerSection);
     std::string line;
     bool firstLine = true;
 
     while (std::getline(headerStream, line)) {
-        // Remove trailing \r
+
         if (!line.empty() && line.back() == '\r') {
             line.pop_back();
         }
@@ -76,7 +71,6 @@ std::optional<HttpRequest> HttpRequest::parse(int client_fd) {
         }
     }
 
-    // Step 4: Read body for POST requests
     if (request.method_ == HttpMethod::POST) {
         std::string contentLengthStr = request.getHeader("content-length");
         if (!contentLengthStr.empty()) {
@@ -95,7 +89,6 @@ std::optional<HttpRequest> HttpRequest::parse(int client_fd) {
 
             request.body_ = bodyData;
 
-            // Read remaining body if we didn't get it all with the headers
             while (request.body_.size() < contentLength) {
                 ssize_t bytesRead = recv(client_fd, buffer,
                     std::min(sizeof(buffer) - 1,
@@ -107,7 +100,6 @@ std::optional<HttpRequest> HttpRequest::parse(int client_fd) {
                 request.body_.append(buffer, static_cast<size_t>(bytesRead));
             }
 
-            // Truncate to exact Content-Length (prevents request smuggling)
             request.body_ = request.body_.substr(0, contentLength);
         }
     }
@@ -123,16 +115,14 @@ bool HttpRequest::parseRequestLine(const std::string& line) {
 
     std::istringstream iss(line);
     if (!(iss >> methodStr_ >> uri_ >> version_)) {
-        return false;  // Need exactly 3 parts
+        return false; 
     }
 
-    // Make sure there's nothing extra
     std::string extra;
     if (iss >> extra) {
         return false;
     }
 
-    // Parse method
     if (methodStr_ == "GET") {
         method_ = HttpMethod::GET;
     } else if (methodStr_ == "POST") {
@@ -141,22 +131,18 @@ bool HttpRequest::parseRequestLine(const std::string& line) {
         method_ = HttpMethod::UNSUPPORTED;
     }
 
-    // SECURITY: enforce URI length limit
     if (uri_.length() > MAX_URI_LENGTH) {
         return false;
     }
 
-    // SECURITY: reject null bytes (injection vector)
     if (uri_.find('\0') != std::string::npos) {
         return false;
     }
 
-    // Validate HTTP version
     if (version_.substr(0, 5) != "HTTP/") {
         return false;
     }
 
-    // Split URI into path and query string
     size_t queryPos = uri_.find('?');
     if (queryPos != std::string::npos) {
         path_ = urlDecode(uri_.substr(0, queryPos));
@@ -177,19 +163,16 @@ bool HttpRequest::parseHeaderLine(const std::string& line) {
     std::string key   = toLower(line.substr(0, colonPos));
     std::string value = line.substr(colonPos + 1);
 
-    // Trim leading whitespace
     size_t start = value.find_first_not_of(" \t");
     if (start != std::string::npos) {
         value = value.substr(start);
     }
 
-    // Trim trailing whitespace
     size_t end = value.find_last_not_of(" \t\r\n");
     if (end != std::string::npos) {
         value = value.substr(0, end + 1);
     }
 
-    // SECURITY: reject newlines in header values (header injection, CWE-113)
     if (value.find('\r') != std::string::npos || value.find('\n') != std::string::npos) {
         Logger::getInstance().warning("Header injection attempt detected in: " + key);
         return false;
@@ -209,7 +192,6 @@ std::string HttpRequest::urlDecode(const std::string& encoded) {
                 std::string hex = encoded.substr(i + 1, 2);
                 char decodedChar = static_cast<char>(std::stoi(hex, nullptr, 16));
 
-                // SECURITY: reject null bytes even when percent-encoded
                 if (decodedChar == '\0') {
                     continue;
                 }

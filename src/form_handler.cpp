@@ -2,8 +2,8 @@
 #include "logger.hpp"
 #include "sandbox.hpp"
 
-#include <unistd.h>     // fork(), pipe(), read(), write()
-#include <sys/wait.h>   // waitpid()
+#include <unistd.h>     
+#include <sys/wait.h>
 #include <fstream>
 #include <sstream>
 #include <ctime>
@@ -30,14 +30,12 @@ HttpResponse FormHandler::handleForm(const HttpRequest& request, int /*clientFd*
         return HttpResponse::badRequest("Empty form submission.");
     }
 
-    // Create a pipe for child → parent communication
     int pipefd[2];
     if (pipe(pipefd) == -1) {
         logger.error("Failed to create pipe: " + std::string(strerror(errno)));
         return HttpResponse::internalError();
     }
 
-    // Fork a child process
     pid_t pid = fork();
 
     if (pid < 0) {
@@ -48,52 +46,32 @@ HttpResponse FormHandler::handleForm(const HttpRequest& request, int /*clientFd*
         return HttpResponse::internalError();
 
     } else if (pid == 0) {
-        // ============================================
-        // CHILD PROCESS — isolated from main server
-        // ============================================
-
-        // Close read end (child only writes)
         close(pipefd[0]);
 
-        // SECURITY: apply sandbox BEFORE processing untrusted data
         Sandbox::applySandbox();
 
-        // Parse form data
         auto formData = parseFormData(request.getBody());
 
-        // Sanitise all values
         for (auto& [key, value] : formData) {
             value = sanitise(value);
         }
 
-        // Save to disk
         bool success = saveFormData(formData);
 
-        // Report result to parent via pipe
         const char* result = success ? "OK" : "FAIL";
         ssize_t written = write(pipefd[1], result, strlen(result));
         (void)written;
 
         close(pipefd[1]);
 
-        // CRITICAL: use _exit() not exit()
-        // exit() would run the parent's cleanup handlers (bad!)
-        // _exit() terminates immediately and safely
         _exit(success ? 0 : 1);
 
     } else {
-        // ============================================
-        // PARENT PROCESS — waits for child result
-        // ============================================
-
-        // Close write end (parent only reads)
         close(pipefd[1]);
 
-        // Wait for child to finish
         int status;
         pid_t result = waitpid(pid, &status, 0);
 
-        // Read result from pipe
         char resultBuf[16] = {0};
         ssize_t bytesRead = read(pipefd[0], resultBuf, sizeof(resultBuf) - 1);
         close(pipefd[0]);
@@ -103,7 +81,6 @@ HttpResponse FormHandler::handleForm(const HttpRequest& request, int /*clientFd*
             return HttpResponse::internalError();
         }
 
-        // Check if child succeeded
         if (WIFEXITED(status) && WEXITSTATUS(status) == 0
             && bytesRead > 0 && std::string(resultBuf) == "OK") {
             logger.info("Form processed by child PID: " + std::to_string(pid));
@@ -137,7 +114,6 @@ std::unordered_map<std::string, std::string> FormHandler::parseFormData(const st
             std::string key   = urlDecode(pair.substr(0, eqPos));
             std::string value = urlDecode(pair.substr(eqPos + 1));
 
-            // Limit field sizes
             if (key.length() <= 256 && value.length() <= 8192) {
                 data[key] = value;
             } else {
@@ -156,14 +132,12 @@ std::string FormHandler::sanitise(const std::string& input) {
 
     for (char c : input) {
         switch (c) {
-            // HTML entity encoding — prevents stored XSS
             case '<':  output += "&lt;";   break;
             case '>':  output += "&gt;";   break;
             case '&':  output += "&amp;";  break;
             case '"':  output += "&quot;"; break;
             case '\'': output += "&#39;";  break;
             default:
-                // Remove control characters (prevents log injection)
                 if (c >= 0x20 || c == '\t' || c == '\n' || c == '\r') {
                     output += c;
                 }
@@ -184,7 +158,6 @@ bool FormHandler::saveFormData(const std::unordered_map<std::string, std::string
         return false;
     }
 
-    // Write timestamp
     auto now = std::time(nullptr);
     auto* tm = std::localtime(&now);
     char timeBuf[64];
@@ -192,7 +165,6 @@ bool FormHandler::saveFormData(const std::unordered_map<std::string, std::string
     file << "[Submitted: " << timeBuf << "]\n";
     file << "---\n";
 
-    // Write each field
     for (const auto& [key, value] : data) {
         file << key << ": " << value << "\n";
     }

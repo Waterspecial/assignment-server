@@ -36,3 +36,117 @@
 [2026-03-31 00:48:44] [INFO    ] FileServer web root: /Users/MAC/Documents/ass-server/www
 [2026-03-31 00:48:44] [INFO    ] All 7 files (4 .hpp + 3 .cpp) compile successfully!
 [2026-03-31 00:48:44] [INFO    ] Logger shutting down
+[2026-03-31 00:57:33] [INFO    ] FileServer web root: /Users/MAC/Documents/ass-server/www
+[2026-03-31 00:57:33] [INFO    ] All 8 files compile! Two more to go.
+[2026-03-31 00:57:33] [INFO    ] Logger shutting down
+[2026-03-31 01:17:17] [INFO    ] FileServer web root: /Users/MAC/Documents/ass-server/www
+[2026-03-31 01:17:17] [INFO    ] All 8 files compile! Two more to go.
+[2026-03-31 01:17:17] [INFO    ] Logger shutting down
+[2026-03-31 01:18:27] [INFO    ] FileServer web root: /Users/MAC/Documents/ass-server/www
+[2026-03-31 01:18:27] [INFO    ] All 8 files compile! Two more to go.
+[2026-03-31 01:18:27] [INFO    ] Logger shutting down
+[2026-03-31 01:20:59] [INFO    ] ========================================
+[2026-03-31 01:20:59] [INFO    ] SSS Secure Web Server starting up
+[2026-03-31 01:20:59] [INFO    ] Port:          8080
+[2026-03-31 01:20:59] [INFO    ] Web root:      ./www
+[2026-03-31 01:20:59] [INFO    ] Form data dir: ./form_data
+[2026-03-31 01:20:59] [INFO    ] ========================================
+[2026-03-31 01:20:59] [DEBUG   ] Signal handlers installed
+[2026-03-31 01:20:59] [INFO    ] FileServer web root: /Users/MAC/Documents/ass-server/www
+[2026-03-31 01:20:59] [INFO    ] Listening on port 8080
+[2026-03-31 01:20:59] [INFO    ] === SSS Secure Web Server started on port 8080 ===
+[2026-03-31 01:20:59] [INFO    ] Serving files from: ./www
+[2026-03-31 01:20:59] [INFO    ] Form data stored in: ./form_data
+[2026-03-31 01:20:59] [INFO    ] Press Ctrl+C to stop the server.
+[2026-03-31 01:21:13] [INFO    ] Accepted connection from: 127.0.0.1:51491
+[2026-03-31 01:21:13] [INFO    ] Handling connection from: 127.0.0.1:51491
+[2026-03-31 01:21:13] [INFO    ] Accepted connection from: 127.0.0.1:51492
+[2026-03-31 01:21:13] [INFO    ] Handling connection from: 127.0.0.1:51492
+[2026-03-31 01:21:13] [INFO    ] Parsed GET request for: /
+[2026-03-31 01:21:13] [DEBUG   ] Routing GET to FileServer: /
+[2026-03-31 01:21:13] [INFO    ] Serving file: /Users/MAC/Documents/ass-server/www/index.html (text/html; charset=utf-8, 1021 bytes)
+[2026-03-31 01:21:13] [INFO    ] Response sent to: 127.0.0.1:51491
+[2026-03-31 01:21:13] [DEBUG   ] Connection closed for: 127.0.0.1:51491
+[2026-03-31 01:21:14] [INFO    ] Parsed GET request for: /favicon.ico
+[2026-03-31 01:21:14] [DEBUG   ] Routing GET to FileServer: /favicon.ico
+[2026-03-31 01:21:14] [INFO    ] File not found or access denied: /favicon.ico
+[2026-03-31 01:21:14] [INFO    ] Response sent to: 127.0.0.1:51492
+[2026-03-31 01:21:14] [DEBUG   ] Connection closed for: 127.0.0.1:51492
+[2026-03-31 01:21:56] [INFO    ] Accepted connection from: 127.0.0.1:51535
+[2026-03-31 01:21:56] [INFO    ] Handling connection from: 127.0.0.1:51535
+[2026-03-31 01:21:56] [INFO    ] Parsed GET request for: /about/info.html
+[2026-03-31 01:21:56] [DEBUG   ] Routing GET to FileServer: /about/info.html
+[2026-03-31 01:21:56] [INFO    ] Accepted connection from: 127.0.0.1:51537
+[2026-03-31 01:21:56] [INFO    ] Handling connection from: 127.0.0.1:51537
+[2026-03-31 01:21:56] [INFO    ] Serving file: /Users/MAC/Documents/ass-server/www/about/info.html (text/html; charset=utf-8, 0 bytes)
+[2026-03-31 01:21:56] [INFO    ] Response sent to: 127.0.0.1:51535
+[2026-03-31 01:21:56] [DEBUG   ] Connection closed for: 127.0.0.1:51535
+[2026-03-31 01:22:06] [INFO    ] Parsed GET request for: /about/info.html
+[2026-03-31 01:22:06] [DEBUG   ] Routing GET to FileServer: /about/info.html
+[2026-03-31 01:22:06] [INFO    ] Accepted connection from: 127.0.0.1:51544
+[2026-03-31 01:22:06] [INFO    ] Handling connection from: 127.0.0.1:51544
+[2026-03-31 01:22:06] [INFO    ] Serving file: /Users/MAC/Documents/ass-server/www/about/info.html (text/html; charset=utf-8, 1080 bytes)
+[2026-03-31 01:22:06] [INFO    ] Response sent to: 127.0.0.1:51537
+[2026-03-31 01:22:06] [DEBUG   ] Connection closed for: 127.0.0.1:51537
+[2026-03-31 01:22:11] [INFO    ] Parsed GET request for: /
+[2026-03-31 01:22:11] [DEBUG   ] Routing GET to FileServer: /
+[2026-03-31 01:22:11] [INFO    ] Accepted connection from: 127.0.0.1:51551
+[2026-03-31 01:22:11] [INFO    ] Handling connection from: 127.0.0.1:51551
+[2026-03-31 01:22:11] [INFO    ] Serving file: /Users/MAC/Documents/ass-server/www/index.html (text/html; charset=utf-8, 1021 bytes)
+[2026-03-31 01:22:11] [INFO    ] Response sent to: 127.0.0.1:51544
+[2026-03-31 01:22:11] [DEBUG   ] Connection closed for: 127.0.0.1:51544
+[2026-03-31 01:22:12] [INFO    ] Parsed GET request for: /form.html
+[2026-03-31 01:22:12] [DEBUG   ] Routing GET to FileServer: /form.html
+[2026-03-31 01:22:12] [INFO    ] Accepted connection from: 127.0.0.1:51554
+[2026-03-31 01:22:12] [INFO    ] Handling connection from: 127.0.0.1:51554
+[2026-03-31 01:22:12] [INFO    ] Serving file: /Users/MAC/Documents/ass-server/www/form.html (text/html; charset=utf-8, 1623 bytes)
+[2026-03-31 01:22:12] [INFO    ] Response sent to: 127.0.0.1:51551
+[2026-03-31 01:22:12] [DEBUG   ] Connection closed for: 127.0.0.1:51551
+[2026-03-31 01:22:31] [INFO    ] Parsed POST request for: /submit
+[2026-03-31 01:22:31] [INFO    ] POST from: 127.0.0.1:51554 to: /submit
+[2026-03-31 01:22:31] [INFO    ] Accepted connection from: 127.0.0.1:51568
+[2026-03-31 01:22:31] [INFO    ] Handling connection from: 127.0.0.1:51568
+[2026-03-31 01:22:31] [WARNING ] Seccomp not available on this platform — sandbox not applied (development mode). Deploy on Linux/Fedora for full sandboxing.
+[2026-03-31 01:22:31] [INFO    ] Form data saved to: ./form_data/form_20260331_012231_2732.txt
+[2026-03-31 01:22:31] [INFO    ] Form processed by child PID: 55880
+[2026-03-31 01:22:31] [INFO    ] Response sent to: 127.0.0.1:51554
+[2026-03-31 01:22:31] [DEBUG   ] Connection closed for: 127.0.0.1:51554
+[2026-03-31 01:22:59] [INFO    ] Parsed GET request for: /bbjjmm
+[2026-03-31 01:22:59] [DEBUG   ] Routing GET to FileServer: /bbjjmm
+[2026-03-31 01:22:59] [INFO    ] File not found or access denied: /bbjjmm
+[2026-03-31 01:22:59] [INFO    ] Response sent to: 127.0.0.1:51568
+[2026-03-31 01:22:59] [DEBUG   ] Connection closed for: 127.0.0.1:51568
+[2026-03-31 01:22:59] [INFO    ] Accepted connection from: 127.0.0.1:51609
+[2026-03-31 01:22:59] [INFO    ] Handling connection from: 127.0.0.1:51609
+[2026-03-31 01:23:59] [INFO    ] Shutdown requested
+[2026-03-31 01:23:59] [INFO    ] === SSS Secure Web Server stopped ===
+[2026-03-31 01:23:59] [INFO    ] Server exited cleanly
+[2026-03-31 01:23:59] [INFO    ] Logger shutting down
+[2026-04-01 11:04:01] [INFO    ] ========================================
+[2026-04-01 11:04:01] [INFO    ] SSS Secure Web Server starting up
+[2026-04-01 11:04:01] [INFO    ] Port:          8080
+[2026-04-01 11:04:01] [INFO    ] Web root:      ./www
+[2026-04-01 11:04:01] [INFO    ] Form data dir: ./form_data
+[2026-04-01 11:04:01] [INFO    ] ========================================
+[2026-04-01 11:04:01] [DEBUG   ] Signal handlers installed
+[2026-04-01 11:04:01] [INFO    ] FileServer web root: /Users/MAC/Documents/ass-server/www
+[2026-04-01 11:04:01] [INFO    ] Listening on port 8080
+[2026-04-01 11:04:01] [INFO    ] === SSS Secure Web Server started on port 8080 ===
+[2026-04-01 11:04:01] [INFO    ] Serving files from: ./www
+[2026-04-01 11:04:01] [INFO    ] Form data stored in: ./form_data
+[2026-04-01 11:04:01] [INFO    ] Press Ctrl+C to stop the server.
+[2026-04-01 11:04:19] [INFO    ] Accepted connection from: 127.0.0.1:65266
+[2026-04-01 11:04:19] [INFO    ] Accepted connection from: 127.0.0.1:65267
+[2026-04-01 11:04:19] [INFO    ] Handling connection from: 127.0.0.1:65266
+[2026-04-01 11:04:19] [INFO    ] Handling connection from: 127.0.0.1:65267
+[2026-04-01 11:04:19] [INFO    ] Parsed GET request for: /
+[2026-04-01 11:04:19] [DEBUG   ] Routing GET to FileServer: /
+[2026-04-01 11:04:19] [INFO    ] Serving file: /Users/MAC/Documents/ass-server/www/index.html (text/html; charset=utf-8, 1021 bytes)
+[2026-04-01 11:04:19] [INFO    ] Response sent to: 127.0.0.1:65266
+[2026-04-01 11:04:19] [DEBUG   ] Connection closed for: 127.0.0.1:65266
+[2026-04-01 11:05:45] [DEBUG   ] Connection closed or read error during request parsing
+[2026-04-01 11:05:45] [WARNING ] Failed to parse request from: 127.0.0.1:65267
+[2026-04-02 14:42:55] [INFO    ] Shutdown requested
+[2026-04-02 14:42:55] [INFO    ] === SSS Secure Web Server stopped ===
+[2026-04-02 14:42:55] [INFO    ] Server exited cleanly
+[2026-04-02 14:42:55] [INFO    ] Logger shutting down
