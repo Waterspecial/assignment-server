@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Form</title>
+    <style>
+        body {
+            font-family: -apple-system, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f8f9fa;
+            color: #333;
+        }
+        h1 { color: #1a5276; }
+        a { color: #2980b9; }
+        label { display: block; margin-top: 1rem; font-weight: 600; }
+        input, textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            margin-top: 0.3rem;
+        }
+        textarea { height: 120px; }
+        button {
+            margin-top: 1rem;
+            background: #2980b9;
+            color: white;
+            border: none;
+            padding: 0.7rem 2rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        button:hover { background: #1a5276; }
+    </style>
+</head>
+<body>
+    <a href="/">&larr; Home</a>
+    <h1>Contact Form</h1>
+    <p>This form is processed in an isolated, sandboxed child process.</p>
+
+    <form method="POST" action="/submit">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea>
+
+        <button type="submit">Send</button>
+    </form>
+</body>
+</html>
