@@ -17,17 +17,26 @@ FormHandler::FormHandler(const std::string& storageDir) : storageDir_(storageDir
 HttpResponse FormHandler::handleForm(const HttpRequest& request, int /*clientFd*/) {
     Logger& logger = Logger::getInstance();
 
-    // Validate Content-Type
-    std::string contentType = request.getHeader("content-type");
-    if (contentType.find("application/x-www-form-urlencoded") == std::string::npos) {
-        logger.warning("Unsupported form content type: " + contentType);
-        return HttpResponse::badRequest("Unsupported content type.");
-    }
-
-    // Check body is not empty
-    if (request.getBody().empty()) {
-        logger.warning("Empty POST body received");
-        return HttpResponse::badRequest("Empty form submission.");
+    std::string rawFormData;
+    if (request.getMethod() == HttpMethod::POST) {
+        std::string contentType = request.getHeader("content-type");
+        if (contentType.find("application/x-www-form-urlencoded") == std::string::npos) {
+            logger.warning("Unsupported form content type: " + contentType);
+            return HttpResponse::badRequest("Unsupported content type.");
+        }
+        if (request.getBody().empty()) {
+            logger.warning("Empty POST body received");
+            return HttpResponse::badRequest("Empty form submission.");
+        }
+        rawFormData = request.getBody();
+    } else if (request.getMethod() == HttpMethod::GET) {
+        if (request.getQueryString().empty()) {
+            logger.warning("GET form submission with empty query string");
+            return HttpResponse::badRequest("Empty form submission.");
+        }
+        rawFormData = request.getQueryString();
+    } else {
+        return HttpResponse::badRequest("Unsupported method for form submission.");
     }
 
     int pipefd[2];
@@ -39,7 +48,6 @@ HttpResponse FormHandler::handleForm(const HttpRequest& request, int /*clientFd*
     pid_t pid = fork();
 
     if (pid < 0) {
-        // Fork failed
         logger.error("Failed to fork: " + std::string(strerror(errno)));
         close(pipefd[0]);
         close(pipefd[1]);
@@ -50,7 +58,7 @@ HttpResponse FormHandler::handleForm(const HttpRequest& request, int /*clientFd*
 
         Sandbox::applySandbox();
 
-        auto formData = parseFormData(request.getBody());
+        auto formData = parseFormData(rawFormData);
 
         for (auto& [key, value] : formData) {
             value = sanitise(value);
