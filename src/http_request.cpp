@@ -25,7 +25,7 @@ std::optional<HttpRequest> HttpRequest::parse(int client_fd) {
         totalRead += static_cast<size_t>(bytesRead);
 
         if (totalRead > MAX_REQUEST_LINE_LENGTH * MAX_HEADER_COUNT + MAX_BODY_SIZE) {
-            logger.warning("Request exceeds maximum allowed size — rejecting");
+            logger.warning("Request exceeds maximum allowed size");
             return std::nullopt;
         }
 

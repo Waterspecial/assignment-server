@@ -15,7 +15,6 @@ public:
     }
     SocketWrapper(SocketWrapper&& other) noexcept
         : fd_(std::exchange(other.fd_, -1)) {}
-
     SocketWrapper& operator=(SocketWrapper&& other) noexcept {
         if (this != &other) {
             if (fd_ >= 0) {
@@ -25,7 +24,6 @@ public:
         }
         return *this;
     }
-
     SocketWrapper(const SocketWrapper&) = delete;
     SocketWrapper& operator=(const SocketWrapper&) = delete;
 
@@ -36,7 +34,6 @@ public:
     int release() {
         return std::exchange(fd_, -1);
     }
-
 private:
     int fd_;
 };
